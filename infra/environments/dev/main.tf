@@ -1,10 +1,10 @@
 module "iam" {
-  source = "../../../modules/lambda"
+  source = "../../../modules/iam"
   environment = "${var.environment}"
 }
 
 module "s3" {
-  source = "../../../modules/lambda"
+  source = "../../../modules/s3"
   
   bucket_name = "${var.environment}-data-pipeline-manas2026"
   }
@@ -32,7 +32,7 @@ module "lambda" {
  
 }
 module "snowflake_layer" {
-  source = "../../../modules/lambda"
+  source = "../../../modules/lambda_layer"
   filename   = "../../../snowflake-layer/snowflake_layer.zip"
   environment="${var.environment}"
   
@@ -43,7 +43,7 @@ module "snowflake_layer" {
 
 
 module "event_bridge" {
-  source = "../../../modules/lambda"
+  source = "../../../modules/event_bridge"
 
   environment         = var.environment
   description         = "Trigger lambda daily at 8 PM IST"
