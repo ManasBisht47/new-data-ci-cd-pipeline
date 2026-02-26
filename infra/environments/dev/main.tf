@@ -33,12 +33,12 @@ module "lambda" {
 }
 module "snowflake_layer" {
   source = "../../../modules/lambda_layer"
-  filename   = "../../../snowflake-layer/snowflake_layer.zip"
+  filename   = "../../../snowflake_layer/snowflake_layer.zip"
   environment="${var.environment}"
   
 
 
-  source_code_hash = "../../../snowflake-layer/snowflake_layer.zip"
+  source_code_hash = "../../../snowflake_layer/snowflake_layer.zip"
 }
 
 
