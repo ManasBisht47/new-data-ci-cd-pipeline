@@ -1,19 +1,55 @@
-resource "aws_cloudwatch_event_rule" "lambda_schedule" {
-  name                = "${var.environment}-daily-8pm-lambda-trigger"
-  description         = var.description
-  schedule_expression = var.schedule_expression
+module "iam" {
+  source = "../../../modules/iam"
+  environment = "${var.environment}"
 }
 
-resource "aws_cloudwatch_event_target" "lambda_target" {
-  rule      = aws_cloudwatch_event_rule.lambda_schedule.name
-  target_id = "${var.environment}-lambda"
-  arn       = var.arn
+module "s3" {
+  source = "../../../modules/s3"
+  
+  bucket_name = "${var.environment}-data-pipeline-manas2026"
+  }
+
+
+module "lambda" {
+  source = "../../../modules/lambda"
+
+  filename         = "../../../lambda_func/lambda.zip"
+  function_name    = "${var.environment}-lambda-function"
+  role             = module.iam.lambda_role_arn
+  handler          = "lambda.lambda_handler"
+  source_code_hash = "../../../lambda_func/lambda.zip"
+  timeout=60
+  layers           = ["arn:aws:lambda:ap-south-1:336392948345:layer:AWSSDKPandas-Python311:26",
+                      module.snowflake_layer.layer_arn]
+  runtime          = "python3.11"
+    environment_variables = {
+    SF_USER     = var.sf_username
+    SF_PASSWORD = var.sf_password
+    SF_ACCOUNT  = var.sf_account_identity
+    ENV=var.environment
+
+  }
+ 
+}
+module "snowflake_layer" {
+  source = "../../../modules/lambda_layer"
+  filename   = "../../../snowflake_layer/snowflake_layer.zip"
+  environment="${var.environment}"
+  
+
+
+  source_code_hash = "../../../snowflake_layer/snowflake_layer.zip"
 }
 
-resource "aws_lambda_permission" "allow_eventbridge" {
-  statement_id  = "AllowExecutionFromEventBridge"
-  action        = "lambda:InvokeFunction"
-  function_name = var.lambda_name
-  principal     = "events.amazonaws.com"
-  source_arn    = aws_cloudwatch_event_rule.lambda_schedule.arn
+
+module "event_bridge" {
+  source = "../../../modules/event_bridge"
+
+  environment         = var.environment
+  description         = "Trigger lambda daily at 8 PM IST"
+  schedule_expression = "cron(30 14 * * ? *)"
+
+  arn         = module.lambda.lambda_arn
+  lambda_name = module.lambda.lambda_name
+
 }

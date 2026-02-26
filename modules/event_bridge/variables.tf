@@ -3,11 +3,13 @@ variable "environment" {
 }
 
 variable "description" {
-  type = string
+  type        = string
+  
 }
 
 variable "schedule_expression" {
-  type = string
+  type        = string
+ 
 }
 
 variable "arn" {
