@@ -51,4 +51,5 @@ module "event_bridge" {
 
   arn         = module.lambda.lambda_arn
   lambda_name = module.lambda.lambda_name
+  
 }
