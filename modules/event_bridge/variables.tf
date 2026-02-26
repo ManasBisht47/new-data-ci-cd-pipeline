@@ -4,12 +4,12 @@ variable "environment" {
 
 variable "description" {
   type        = string
-  description = "Description for CloudWatch rule"
+  
 }
 
 variable "schedule_expression" {
   type        = string
-  description = "Cron or rate expression"
+ 
 }
 
 variable "arn" {
