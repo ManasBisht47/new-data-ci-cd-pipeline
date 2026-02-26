@@ -1,17 +1,17 @@
 module "iam" {
-  source      = "../../modules/iam"
+  source = "../../../modules/lambda"
   environment = "${var.environment}"
 }
 
 module "s3" {
-  source      = "../../modules/s3"
+  source = "../../../modules/lambda"
   
   bucket_name = "${var.environment}-data-pipeline-manas2026"
   }
 
 
 module "lambda" {
-  source = "../../modules/lambda"
+  source = "../../../modules/lambda"
 
   filename         = "../../../lambda_func/lambda.zip"
   function_name    = "${var.environment}-lambda-function"
@@ -32,7 +32,7 @@ module "lambda" {
  
 }
 module "snowflake_layer" {
-  source= "../../modules/lambda_layer"
+  source = "../../../modules/lambda"
   filename   = "../../../snowflake-layer/snowflake_layer.zip"
   environment="${var.environment}"
   
@@ -43,7 +43,7 @@ module "snowflake_layer" {
 
 
 module "event_bridge" {
-  source = "../../modules/event_bridge"
+  source = "../../../modules/lambda"
 
   environment         = var.environment
   description         = "Trigger lambda daily at 8 PM IST"
@@ -51,5 +51,5 @@ module "event_bridge" {
 
   arn         = module.lambda.lambda_arn
   lambda_name = module.lambda.lambda_name
-  
+
 }
