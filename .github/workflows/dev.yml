@@ -35,7 +35,7 @@ jobs:
 
       - name: Terraform Init
         working-directory: infra/environments/dev
-        run: terraform init
+        run: terraform init 
 
       - name: Terraform Plan
         working-directory: infra/environments/dev
