@@ -1,6 +1,6 @@
-sf_org_name="TDRCOEM"
-sf_username     = "MANASBISHT999"
-sf_password = "MANASBISHT@500b"
-sf_account  = "OG24059"
+sf_org_name="NUVNITE"
+sf_username     = "MANASBISHT8055"
+sf_password = "MANASbisht@8055"
+sf_account  = "WD77077"
 
-sf_account_identity ="uu42917.me-central-1.aws"
+sf_account_identity ="ih89286.ap-southeast-7.aws"
