@@ -9,6 +9,7 @@ s3=boto3.client("s3")
 
 
 def lambda_handler(event, context):
+    
 
 
     url="https://dummy-json.mock.beeceptor.com/users"
@@ -24,6 +25,8 @@ def lambda_handler(event, context):
     df["STATE_AND_COUNTRY"]=df["state"]+","+df["country"]
 
     cleaned_data= df.to_json(orient="records")
+
+
 
     
     s3.put_object(
